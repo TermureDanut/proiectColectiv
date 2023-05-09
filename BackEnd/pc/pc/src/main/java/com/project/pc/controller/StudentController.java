@@ -11,28 +11,21 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/students")
 public class StudentController {
     @Autowired
     private StudentService studentService;
-    private Long id;
-
-    @PostMapping("/createStudent")
-    public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        Student createdStudent = studentService.createStudent(student);
-        return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<HttpStatus> createStudent(@RequestBody Student student){
+        return new ResponseEntity<>(studentService.createStudent(student));
     }
-    @GetMapping("/students")
+    @GetMapping
     public ResponseEntity<List<Student>> getAllStudents(){
         List<Student> students = studentService.getAllStudents();
-        if (students.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
-
-    @GetMapping("/student/{studID}")
-    public Student getStudent(@PathVariable("studId") Long id) {
+    @GetMapping("{id}")
+    public Student getStudent(@PathVariable("id") Long id) {
         return studentService.getStudentById(id);
     }
 
