@@ -12,13 +12,10 @@ public class Student {
     private String name;
     @Column
     private String email;
-    @Column
-    private int leader;
     public Student() {}
-    public Student(String name, String email, int leader) {
+    public Student(String name, String email) {
         this.name = name;
         this.email = email;
-        this.leader = leader;
     }
     public long getId() {
         return id;
@@ -37,11 +34,5 @@ public class Student {
     }
     public void setEmail(String email) {
         this.email = email;
-    }
-    public int getLeader() {
-        return leader;
-    }
-    public void setLeader(int leader) {
-        this.leader = leader;
     }
 }
