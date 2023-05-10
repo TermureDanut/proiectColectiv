@@ -28,4 +28,14 @@ public class ActivityService {
         }
         return activity;
     }
+    public Activity updateAllFieldsOfActivity (Long id, Activity newActivity){
+        Activity activity = activityRepository.findById(id).orElse(null);
+        if (activity == null){
+            return null;
+        }
+        activity.setName(newActivity.getName());
+        activity.setDescription(newActivity.getDescription());
+        activityRepository.save(activity);
+        return activity;
+    }
 }

@@ -35,4 +35,12 @@ public class ActivityController {
         }
         return new ResponseEntity<>(activity, HttpStatus.FOUND);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<Activity> updateAllFieldsOfActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
+        Activity activity1 = activityService.updateAllFieldsOfActivity(id, activity);
+        if (activity1 == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(activity1, HttpStatus.OK);
+    }
 }
