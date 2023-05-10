@@ -32,4 +32,18 @@ public class MentorService {
         mentorRepository.save(update);
         return update;
     }
+    public Mentor patchMentor(Long id, Mentor mentor){
+        Mentor update = mentorRepository.findMentorById(id).orElse(null);
+        if (update == null){
+            return null;
+        }
+        if (mentor.getEmail() != null){
+            update.setEmail(mentor.getEmail());
+        }
+        if (mentor.getName() != null){
+            update.setName(mentor.getName());
+        }
+        mentorRepository.save(update);
+        return update;
+    }
 }
