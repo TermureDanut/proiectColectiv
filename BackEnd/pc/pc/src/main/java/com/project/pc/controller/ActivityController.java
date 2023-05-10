@@ -36,7 +36,7 @@ public class ActivityController {
         return new ResponseEntity<>(activity, HttpStatus.FOUND);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Activity> updateAllFieldsOfActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
+    public ResponseEntity<Activity> updateActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
         Activity updated = activityService.updateActivity(id, activity);
         if (updated == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -50,5 +50,13 @@ public class ActivityController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+    @DeleteMapping
+    public ResponseEntity<HttpStatus> deleteAllActivities(){
+        return new ResponseEntity<>(activityService.deleteAllActivities());
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteActivityById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(activityService.deleteActivityById(id));
     }
 }
