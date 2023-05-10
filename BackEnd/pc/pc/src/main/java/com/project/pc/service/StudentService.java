@@ -41,6 +41,20 @@ public class StudentService {
         studentRepository.save(student);
         return student;
     }
+    public Student updateNeededFieldOfStudent(long id, Student updatedStudent) {
+        Student student = studentRepository.findById(id).orElse(null);
+        if (student == null){
+            return null;
+        }
+        if (updatedStudent.getName() != null) {
+            student.setName(updatedStudent.getName());
+        }
+        if (updatedStudent.getEmail() != null) {
+            student.setEmail(updatedStudent.getEmail());
+        }
+        studentRepository.save(student);
+        return student;
+    }
     public HttpStatus deleteAllStudents(){
         studentRepository.deleteAll();
         return HttpStatus.OK;

@@ -29,7 +29,7 @@ public class StudentController {
     public ResponseEntity<Student> getStudentById(@PathVariable("id") Long id) {
         Student student = studentService.getStudentById(id);
         if (student == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(student, HttpStatus.FOUND);
     }
@@ -37,9 +37,17 @@ public class StudentController {
     public ResponseEntity<Student> updateAllFieldsOfStudent(@PathVariable("id") Long id, @RequestBody Student newStudent){
         Student student = studentService.updateAllFieldsOfStudent(id, newStudent);
         if (student == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(student, HttpStatus.OK);
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody Student updatedStudent) {
+        Student updated = studentService.updateNeededFieldOfStudent(id, updatedStudent);
+        if (updated == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllStudents(){
