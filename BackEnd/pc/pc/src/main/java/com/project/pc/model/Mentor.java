@@ -13,8 +13,7 @@ public class Mentor {
     @Column
     private String email;
     public Mentor(){}
-    public Mentor(long id, String name, String email) {
-        this.id = id;
+    public Mentor(String name, String email) {
         this.name = name;
         this.email = email;
     }
