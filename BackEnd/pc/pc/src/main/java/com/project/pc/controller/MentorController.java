@@ -33,4 +33,12 @@ public class MentorController {
         }
         return new ResponseEntity<>(mentor, HttpStatus.OK);
     }
+    @PutMapping("{id}")
+    public ResponseEntity<Mentor> updateMentor(@PathVariable("id") Long id, @RequestBody Mentor mentor){
+        Mentor update = mentorService.updateMentor(id, mentor);
+        if (update == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(update, HttpStatus.OK);
+    }
 }

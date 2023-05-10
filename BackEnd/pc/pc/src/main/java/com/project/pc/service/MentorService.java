@@ -22,4 +22,14 @@ public class MentorService {
     public Mentor getMentorById(Long id){
         return mentorRepository.findMentorById(id).orElse(null);
     }
+    public Mentor updateMentor(Long id, Mentor mentor){
+        Mentor update = mentorRepository.findMentorById(id).orElse(null);
+        if (update == null){
+            return null;
+        }
+        update.setName(mentor.getName());
+        update.setEmail(mentor.getEmail());
+        mentorRepository.save(update);
+        return update;
+    }
 }
