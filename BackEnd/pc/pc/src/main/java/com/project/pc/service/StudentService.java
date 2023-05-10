@@ -41,4 +41,17 @@ public class StudentService {
         studentRepository.save(student);
         return student;
     }
+    public HttpStatus deleteAllStudents(){
+        studentRepository.deleteAll();
+        return HttpStatus.OK;
+    }
+    public HttpStatus deleteStudentById(long id){
+        Optional<Student> student = studentRepository.findById(id);
+        if (student.isPresent()){
+            studentRepository.deleteById(id);
+            return HttpStatus.OK;
+        }else {
+            return HttpStatus.NOT_FOUND;
+        }
+    }
 }
