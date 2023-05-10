@@ -16,8 +16,9 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
     @PostMapping
-    public ResponseEntity<HttpStatus> createStudent(@RequestBody Student student){
-        return new ResponseEntity<>(studentService.createStudent(student));
+    public ResponseEntity<Student> createStudent(@RequestBody Student student){
+        Student createdStudent = studentService.createStudent(student);
+        return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
     @GetMapping
     public ResponseEntity<List<Student>> getAllStudents(){
@@ -32,6 +33,12 @@ public class StudentController {
         }
         return new ResponseEntity<>(student, HttpStatus.FOUND);
     }
-
-
+    @PutMapping("{id}")
+    public ResponseEntity<Student> updateAllFieldsOfStudent(@PathVariable("id") Long id, @RequestBody Student newStudent){
+        Student student = studentService.updateAllFieldsOfStudent(id, newStudent);
+        if (student == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
 }

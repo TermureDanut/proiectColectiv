@@ -4,6 +4,7 @@ import com.project.pc.model.Student;
 import com.project.pc.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,20 +16,8 @@ import java.util.Optional;
 public class StudentService {
     @Autowired
     StudentRepository studentRepository;
-    public HttpStatus createStudent(Student student){
-        Student student1 = new Student();
-        if (Objects.nonNull(student.getEmail())){
-            student1.setEmail(student.getEmail());
-        }else{
-            return HttpStatus.BAD_REQUEST;
-        }
-        if (Objects.nonNull(student.getName())){
-            student1.setName(student.getName());
-        }else{
-            return HttpStatus.BAD_REQUEST;
-        }
-        studentRepository.save(student1);
-        return HttpStatus.CREATED;
+    public Student createStudent(Student student){
+        return studentRepository.save(new Student(student.getName(), student.getEmail()));
     }
     public List<Student> getAllStudents(){
         List<Student> students = new ArrayList<>();
@@ -36,7 +25,20 @@ public class StudentService {
         return students;
     }
     public Student getStudentById (Long id) {
-        Optional<Student> student = studentRepository.findById(id);
-        return student.orElse(null);
+        Student student = studentRepository.findById(id).orElse(null);
+        if (student == null){
+            return null;
+        }
+        return student;
+    }
+    public Student updateAllFieldsOfStudent (Long id, Student newStudent){
+        Student student = studentRepository.findStudentById(id).orElse(null);
+        if (student == null){
+            return null;
+        }
+        student.setName(newStudent.getName());
+        student.setEmail(newStudent.getEmail());
+        studentRepository.save(student);
+        return student;
     }
 }
