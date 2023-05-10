@@ -31,29 +31,29 @@ public class StudentService {
         }
         return student;
     }
-    public Student updateAllFieldsOfStudent (Long id, Student newStudent){
-        Student student = studentRepository.findStudentById(id).orElse(null);
-        if (student == null){
+    public Student updateStudent (Long id, Student student){
+        Student update = studentRepository.findStudentById(id).orElse(null);
+        if (update == null){
             return null;
         }
-        student.setName(newStudent.getName());
-        student.setEmail(newStudent.getEmail());
-        studentRepository.save(student);
-        return student;
+        update.setName(student.getName());
+        update.setEmail(student.getEmail());
+        studentRepository.save(update);
+        return update;
     }
-    public Student updateNeededFieldOfStudent(long id, Student updatedStudent) {
-        Student student = studentRepository.findById(id).orElse(null);
-        if (student == null){
+    public Student patchStudent(long id, Student student) {
+        Student update = studentRepository.findById(id).orElse(null);
+        if (update == null){
             return null;
         }
-        if (updatedStudent.getName() != null) {
-            student.setName(updatedStudent.getName());
+        if (student.getName() != null) {
+            update.setName(student.getName());
         }
-        if (updatedStudent.getEmail() != null) {
-            student.setEmail(updatedStudent.getEmail());
+        if (student.getEmail() != null) {
+            update.setEmail(student.getEmail());
         }
-        studentRepository.save(student);
-        return student;
+        studentRepository.save(update);
+        return update;
     }
     public HttpStatus deleteAllStudents(){
         studentRepository.deleteAll();

@@ -34,16 +34,16 @@ public class StudentController {
         return new ResponseEntity<>(student, HttpStatus.FOUND);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateAllFieldsOfStudent(@PathVariable("id") Long id, @RequestBody Student newStudent){
-        Student student = studentService.updateAllFieldsOfStudent(id, newStudent);
-        if (student == null){
+    public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody Student student){
+        Student update = studentService.updateStudent(id, student);
+        if (update == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(student, HttpStatus.OK);
+        return new ResponseEntity<>(update, HttpStatus.OK);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody Student updatedStudent) {
-        Student updated = studentService.updateNeededFieldOfStudent(id, updatedStudent);
+    public ResponseEntity<Student> patchStudent(@PathVariable("id") Long id, @RequestBody Student student) {
+        Student updated = studentService.patchStudent(id, student);
         if (updated == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
