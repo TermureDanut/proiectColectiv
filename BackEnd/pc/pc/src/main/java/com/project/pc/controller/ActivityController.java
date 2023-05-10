@@ -37,10 +37,18 @@ public class ActivityController {
     }
     @PutMapping("/{id}")
     public ResponseEntity<Activity> updateAllFieldsOfActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
-        Activity activity1 = activityService.updateAllFieldsOfActivity(id, activity);
-        if (activity1 == null){
+        Activity updated = activityService.updateActivity(id, activity);
+        if (updated == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(activity1, HttpStatus.OK);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Activity> patchActivity(@PathVariable("id") Long id, @RequestBody Activity activity) {
+        Activity updated = activityService.patchActivity(id, activity);
+        if (updated == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 }

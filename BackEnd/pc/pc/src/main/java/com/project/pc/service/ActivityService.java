@@ -28,14 +28,28 @@ public class ActivityService {
         }
         return activity;
     }
-    public Activity updateAllFieldsOfActivity (Long id, Activity newActivity){
-        Activity activity = activityRepository.findById(id).orElse(null);
-        if (activity == null){
+    public Activity updateActivity (Long id, Activity activity){
+        Activity update = activityRepository.findById(id).orElse(null);
+        if (update == null){
             return null;
         }
-        activity.setName(newActivity.getName());
-        activity.setDescription(newActivity.getDescription());
-        activityRepository.save(activity);
-        return activity;
+        update.setName(activity.getName());
+        update.setDescription(activity.getDescription());
+        activityRepository.save(update);
+        return update;
+    }
+    public Activity patchActivity(long id, Activity activity) {
+        Activity update = activityRepository.findById(id).orElse(null);
+        if (update == null){
+            return null;
+        }
+        if (activity.getName() != null) {
+            update.setName(activity.getName());
+        }
+        if (activity.getDescription() != null) {
+            update.setDescription(activity.getDescription());
+        }
+        activityRepository.save(update);
+        return update;
     }
 }
