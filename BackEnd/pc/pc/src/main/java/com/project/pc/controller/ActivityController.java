@@ -1,14 +1,11 @@
 package com.project.pc.controller;
 
 import com.project.pc.model.Activity;
-import com.project.pc.model.Student;
-import com.project.pc.repository.ActivityRepository;
 import com.project.pc.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
