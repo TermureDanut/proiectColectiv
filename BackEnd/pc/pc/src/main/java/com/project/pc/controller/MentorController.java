@@ -49,4 +49,12 @@ public class MentorController {
         }
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
+    @DeleteMapping
+    public ResponseEntity<HttpStatus> deleteAllMentors(){
+        return new ResponseEntity<>(mentorService.deleteAllMentors());
+    }
+    @DeleteMapping("{id}")
+    public ResponseEntity<HttpStatus> deleteMentorById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(mentorService.deleteMentorById(id));
+    }
 }
