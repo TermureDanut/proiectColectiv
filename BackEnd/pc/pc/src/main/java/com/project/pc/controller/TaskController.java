@@ -1,5 +1,6 @@
 package com.project.pc.controller;
 
+import com.project.pc.model.Student;
 import com.project.pc.model.Task;
 import com.project.pc.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,13 @@ public class TaskController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+    @PutMapping("{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody Task task){
+        Task update = taskService.updateTask(id, task);
+        if (update == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(update, HttpStatus.OK);
     }
 }
