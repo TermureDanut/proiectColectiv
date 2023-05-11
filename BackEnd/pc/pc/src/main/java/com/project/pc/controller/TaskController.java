@@ -50,4 +50,12 @@ public class TaskController {
         }
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
+    @DeleteMapping
+    public ResponseEntity<HttpStatus> deleteAllTasks(){
+        return new ResponseEntity<>(taskService.deleteAllTasks());
+    }
+    @DeleteMapping("{id}")
+    public ResponseEntity<HttpStatus> deleteTaskById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(taskService.deleteTaskById(id));
+    }
 }

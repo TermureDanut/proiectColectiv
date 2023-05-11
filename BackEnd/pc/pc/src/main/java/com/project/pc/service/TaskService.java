@@ -4,9 +4,12 @@ import com.project.pc.model.Student;
 import com.project.pc.model.Task;
 import com.project.pc.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.HTML;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -53,5 +56,18 @@ public class TaskService {
         }
         taskRepository.save(update);
         return update;
+    }
+    public HttpStatus deleteAllTasks(){
+        taskRepository.deleteAll();
+        return HttpStatus.OK;
+    }
+    public HttpStatus deleteTaskById(Long id){
+        Optional<Task> task = taskRepository.findById(id);
+        if (task.isPresent()){
+            taskRepository.deleteById(id);
+            return HttpStatus.OK;
+        }else {
+            return HttpStatus.BAD_REQUEST;
+        }
     }
 }

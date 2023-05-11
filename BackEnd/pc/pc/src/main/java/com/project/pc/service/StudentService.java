@@ -62,7 +62,7 @@ public class StudentService {
             studentRepository.deleteById(id);
             return HttpStatus.OK;
         }else {
-            return HttpStatus.NOT_FOUND;
+            return HttpStatus.BAD_REQUEST;
         }
     }
 }
