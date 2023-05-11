@@ -42,4 +42,12 @@ public class TaskController {
         }
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Task> patchTask(@PathVariable("id") Long id, @RequestBody Task task) {
+        Task updated = taskService.patchTask(id, task);
+        if (updated == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
 }

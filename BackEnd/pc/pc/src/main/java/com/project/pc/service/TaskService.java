@@ -34,4 +34,24 @@ public class TaskService {
         taskRepository.save(update);
         return update;
     }
+    public Task patchTask(long id, Task task) {
+        Task update = taskRepository.findById(id).orElse(null);
+        if (update == null){
+            return null;
+        }
+        if (task.getAttendance() != 0) {
+            update.setAttendance(task.getAttendance());
+        }
+        if (task.getDescription() != null) {
+            update.setDescription(task.getDescription());
+        }
+        if (task.getGrade() != 0){
+            update.setGrade(task.getGrade());
+        }
+        if (task.getDeadline() != null){
+            update.setDeadline(task.getDeadline());
+        }
+        taskRepository.save(update);
+        return update;
+    }
 }
