@@ -73,6 +73,10 @@ public class StudentController {
         }
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
+    @DeleteMapping("{id}/teams/{tId}")
+    public ResponseEntity<HttpStatus> deleteFromTeam(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
+        return new ResponseEntity<>(studentService.deleteFromTeam(id, tId));
+    }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllStudents(){
         return new ResponseEntity<>(studentService.deleteAllStudents());

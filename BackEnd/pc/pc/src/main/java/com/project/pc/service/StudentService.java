@@ -75,6 +75,15 @@ public class StudentService {
         studentRepository.save(update);
         return update;
     }
+    public HttpStatus deleteFromTeam(Long id, Long tId){
+        Student student = studentRepository.findStudentById(id).orElse(null);
+        if (student == null ||student.getTeam() == null || student.getTeam().getId() != tId){
+            return HttpStatus.BAD_REQUEST;
+        }
+        student.setTeam(null);
+        studentRepository.save(student);
+        return HttpStatus.OK;
+    }
     public HttpStatus deleteAllStudents(){
         studentRepository.deleteAll();
         return HttpStatus.OK;
