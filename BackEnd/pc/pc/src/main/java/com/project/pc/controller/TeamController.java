@@ -19,6 +19,23 @@ public class TeamController {
     public ResponseEntity<Team> createTeam(@RequestBody Team team){
         return new ResponseEntity<>(teamService.createTeam(team), HttpStatus.CREATED);
     }
+
+    @PostMapping("{id}/activities/{aId}")
+    public ResponseEntity<Team> addToActivity(@PathVariable("id") Long id, @PathVariable("aId") Long aId){
+        Team team = teamService.addToActivity(id, aId);
+        if (team == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(team, HttpStatus.OK);
+    }
+    @PostMapping("{id}/mentors/{mId}")
+    public ResponseEntity<Team> addToMentor(@PathVariable("id") Long id, @PathVariable("mId") Long mId){
+        Team team = teamService.addToMentor(id, mId);
+        if (team == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(team, HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<Team>> getAllTeams(){
         return new ResponseEntity<>(teamService.getAllTeams(), HttpStatus.OK);
