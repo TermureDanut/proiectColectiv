@@ -28,6 +28,15 @@ public class StudentService {
         }
         return student;
     }
+    public List<Student> getStudentByName(String name){
+        return studentRepository.findStudentByName(name);
+    }
+    public Student getStudentByEmail(String email){
+        return studentRepository.findStudentByEmail(email).orElse(null);
+    }
+    public List<Student> getTeamMembers(Long tId){
+        return studentRepository.findByTeamId(tId);
+    }
     public Student updateStudent (Long id, Student student){
         Student update = studentRepository.findStudentById(id).orElse(null);
         if (update == null){

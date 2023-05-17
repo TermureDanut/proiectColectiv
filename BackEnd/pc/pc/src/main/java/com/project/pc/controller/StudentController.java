@@ -32,6 +32,23 @@ public class StudentController {
         }
         return new ResponseEntity<>(student, HttpStatus.FOUND);
     }
+    @GetMapping("name/{name}")
+    public ResponseEntity<List<Student>> getStudentByName(@PathVariable("name") String name){
+        List<Student> students = studentService.getStudentByName(name);
+        return new ResponseEntity<>(students, HttpStatus.FOUND);
+    }
+    @GetMapping("email/{email}")
+    public ResponseEntity<Student> getStudentByEmail(@PathVariable("email") String email){
+        Student student = studentService.getStudentByEmail(email);
+        if (student == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
+    @GetMapping("{tId}")
+    public ResponseEntity<List<Student>> getTeamMembers(@PathVariable("tId") Long tId){
+        return new ResponseEntity<>(studentService.getTeamMembers(tId), HttpStatus.OK);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody Student student){
         Student update = studentService.updateStudent(id, student);
