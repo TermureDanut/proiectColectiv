@@ -51,6 +51,9 @@ public class TeamService {
     public Team getTeamById(Long id){
         return teamRepository.findById(id).orElse(null);
     }
+    public Team getTeamByTeamLeader(Long id){
+        return teamRepository.findByTeamLeader(id).orElse(null);
+    }
     public Team updateTeam(Long id, Team team){
         Team update = teamRepository.findById(id).orElse(null);
         if (update == null){

@@ -48,6 +48,14 @@ public class TeamController {
         }
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
+    @GetMapping("leader/{id}")
+    public ResponseEntity<Team> getTeamByTeamLeader(@PathVariable("id") Long id){
+        Team team = teamService.getTeamByTeamLeader(id);
+        if (team == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(team, HttpStatus.OK);
+    }
     @PutMapping("{id}")
     public ResponseEntity<Team> updateTeam(@PathVariable("id") Long id, @RequestBody Team team){
         Team update = teamService.updateTeam(id, team);
