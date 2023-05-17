@@ -23,6 +23,12 @@ public class MentorService {
     public Mentor getMentorById(Long id){
         return mentorRepository.findMentorById(id).orElse(null);
     }
+    public List<Mentor> getMentorByName(String name){
+        return mentorRepository.findMentorByName(name);
+    }
+    public Mentor getMentorByEmail(String email){
+        return mentorRepository.findMentorByEmail(email).orElse(null);
+    }
     public Mentor updateMentor(Long id, Mentor mentor){
         Mentor update = mentorRepository.findMentorById(id).orElse(null);
         if (update == null){

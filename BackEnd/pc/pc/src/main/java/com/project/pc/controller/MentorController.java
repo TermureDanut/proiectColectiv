@@ -33,6 +33,19 @@ public class MentorController {
         }
         return new ResponseEntity<>(mentor, HttpStatus.OK);
     }
+    @GetMapping("name/{name}")
+    public ResponseEntity<List<Mentor>> getMentorByName(@PathVariable("name") String name){
+        List<Mentor> mentors = mentorService.getMentorByName(name);
+        return new ResponseEntity<>(mentors, HttpStatus.FOUND);
+    }
+    @GetMapping("email/{email}")
+    public ResponseEntity<Mentor> getMentorByEmail(@PathVariable("email") String email){
+        Mentor mentor = mentorService.getMentorByEmail(email);
+        if (mentor == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(mentor, HttpStatus.OK);
+    }
     @PutMapping("{id}")
     public ResponseEntity<Mentor> updateMentor(@PathVariable("id") Long id, @RequestBody Mentor mentor){
         Mentor update = mentorService.updateMentor(id, mentor);
