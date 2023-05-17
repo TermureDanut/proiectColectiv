@@ -32,6 +32,11 @@ public class ActivityController {
         }
         return new ResponseEntity<>(activity, HttpStatus.FOUND);
     }
+    @GetMapping("name/{name}")
+    public ResponseEntity<List<Activity>> getActivityByName(@PathVariable("name") String name) {
+        List<Activity> activities = activityService.getActivityByName(name);
+        return new ResponseEntity<>(activities, HttpStatus.FOUND);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<Activity> updateActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
         Activity updated = activityService.updateActivity(id, activity);

@@ -28,6 +28,9 @@ public class ActivityService {
         }
         return activity;
     }
+    public List<Activity> getActivityByName(String name){
+        return activityRepository.findByName(name);
+    }
     public Activity updateActivity (Long id, Activity activity){
         Activity update = activityRepository.findById(id).orElse(null);
         if (update == null){
