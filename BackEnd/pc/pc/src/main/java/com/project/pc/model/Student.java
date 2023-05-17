@@ -1,6 +1,10 @@
 package com.project.pc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "students")
@@ -12,6 +16,12 @@ public class Student {
     private String name;
     @Column
     private String email;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @Nullable
+    private Team team;
     public Student() {}
     public Student(String name, String email) {
         this.name = name;

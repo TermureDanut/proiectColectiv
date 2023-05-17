@@ -14,7 +14,6 @@ public class Activity {
     private String description;
     public Activity() {}
     public Activity(String name, String description) {
-        this.id = id;
         this.name = name;
         this.description = description;
     }
