@@ -19,6 +19,14 @@ public class StudentController {
         Student createdStudent = studentService.createStudent(student);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
+    @PostMapping("{id}/teams/{tId}")
+    public ResponseEntity<Student> addToTeam(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
+        Student student = studentService.addToTeam(id, tId);
+        if (student == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<Student>> getAllStudents(){
         List<Student> students = studentService.getAllStudents();

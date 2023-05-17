@@ -1,7 +1,9 @@
 package com.project.pc.service;
 
 import com.project.pc.model.Student;
+import com.project.pc.model.Team;
 import com.project.pc.repository.StudentRepository;
+import com.project.pc.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,21 @@ import java.util.Optional;
 @Service
 public class StudentService {
     @Autowired
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
+    @Autowired
+    private TeamRepository teamRepository;
     public Student createStudent(Student student){
         return studentRepository.save(new Student(student.getName(), student.getEmail()));
+    }
+    public Student addToTeam(Long id, Long tId){
+        Student student = studentRepository.findById(id).orElse(null);
+        Team team = teamRepository.findById(tId).orElse(null);
+        if (student == null || team == null){
+            return null;
+        }
+        student.setTeam(team);
+        studentRepository.save(student);
+        return student;
     }
     public List<Student> getAllStudents(){
         List<Student> students = new ArrayList<>();
