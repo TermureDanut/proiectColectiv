@@ -8,7 +8,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.NonNull;
 
 @Entity
-@Table(name = "tasks")
+@Table
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -64,4 +64,6 @@ public class Task {
     public void setAttendance(int attendance) {
         this.attendance = attendance;
     }
+    public Activity getActivity() {return activity;}
+    public void setActivity(Activity activity) {this.activity = activity;}
 }

@@ -7,7 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "teams")
+@Table
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,4 +42,8 @@ public class Team {
     public void setTeamLeader(long teamLeader) {
         this.teamLeader = teamLeader;
     }
+    public Activity getActivity() {return activity;}
+    public void setActivity(Activity activity) {this.activity = activity;}
+    public Mentor getMentor() {return mentor;}
+    public void setMentor(Mentor mentor) {this.mentor = mentor;}
 }

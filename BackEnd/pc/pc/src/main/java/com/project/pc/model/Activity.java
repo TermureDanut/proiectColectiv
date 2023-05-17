@@ -3,7 +3,7 @@ package com.project.pc.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "activities")
+@Table
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
