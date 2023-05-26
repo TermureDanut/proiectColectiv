@@ -10,14 +10,13 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/api/students/")
 public class StudentController {
     @Autowired
     private StudentService studentService;
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        Student createdStudent = studentService.createStudent(student);
-        return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
+    public ResponseEntity<String> createStudent(@RequestBody Student student) {
+        return studentService.createStudent(student);
     }
     @PostMapping("{id}/teams/{tId}")
     public ResponseEntity<Student> addToTeam(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
