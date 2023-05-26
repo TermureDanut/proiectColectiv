@@ -4,12 +4,16 @@ import com.project.pc.model.Student;
 import com.project.pc.model.Team;
 import com.project.pc.repository.StudentRepository;
 import com.project.pc.repository.TeamRepository;
+import jakarta.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class StudentService {
@@ -17,8 +21,22 @@ public class StudentService {
     private StudentRepository studentRepository;
     @Autowired
     private TeamRepository teamRepository;
-    public Student createStudent(Student student){
-        return studentRepository.save(new Student(student.getName(), student.getEmail()));
+    private Validator validator;
+    public StudentService() {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
+    }
+    public ResponseEntity<String> createStudent(Student student) {
+        Set<ConstraintViolation<Student>> violations = validator.validate(student);
+        if (!violations.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Student email");
+        }
+        try {
+            studentRepository.save(student);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Student created successfully");
+        } catch (DataIntegrityViolationException exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate entry: Student already exists");
+        }
     }
     public Student addToTeam(Long id, Long tId){
         Student student = studentRepository.findById(id).orElse(null);
