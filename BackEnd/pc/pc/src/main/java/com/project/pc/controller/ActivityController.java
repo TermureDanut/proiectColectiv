@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api/activities")
+@RequestMapping("/api/activities/")
 public class ActivityController {
     @Autowired
     private ActivityService activityService;

@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin("http://localhost:8080")
 @RestController
-@RequestMapping("/api/mentors")
+@RequestMapping("/api/mentors/")
 public class MentorController {
     @Autowired
     private MentorService mentorService;

@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin("http://localhost:8080")
 @RestController
-@RequestMapping("/api/teams")
+@RequestMapping("/api/teams/")
 public class TeamController {
     @Autowired
     private TeamService teamService;
