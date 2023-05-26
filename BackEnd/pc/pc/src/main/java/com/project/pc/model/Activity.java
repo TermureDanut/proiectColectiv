@@ -8,7 +8,7 @@ public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column
+    @Column(unique = true)
     private String name;
     @Column
     private String description;

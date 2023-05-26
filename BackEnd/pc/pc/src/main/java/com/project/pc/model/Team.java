@@ -12,7 +12,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column
+    @Column(unique = true)
     private long teamLeader;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id")

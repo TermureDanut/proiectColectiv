@@ -1,6 +1,7 @@
 package com.project.pc.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 
 @Entity
 @Table
@@ -10,7 +11,8 @@ public class Mentor {
     private long id;
     @Column
     private String name;
-    @Column
+    @Column(unique = true)
+    @Email
     private String email;
     public Mentor(){}
     public Mentor(String name, String email) {

@@ -3,18 +3,20 @@ package com.project.pc.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table
-public class Student {
+public class Student{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column
     private String name;
-    @Column
+    @Column(unique = true)
+    @Email
     private String email;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
@@ -23,7 +25,7 @@ public class Student {
     @Nullable
     private Team team;
     public Student() {}
-    public Student(String name, String email) {
+    public Student(String name, String email){
         this.name = name;
         this.email = email;
     }
