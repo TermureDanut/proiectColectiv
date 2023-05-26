@@ -27,6 +27,18 @@ public class Task {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @Nullable
     private Activity activity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @Nullable
+    private Student student;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @Nullable
+    private Team team;
     public Task(){}
     public Task(int grade, String description, String deadline, int attendance) {
         this.grade = grade;
@@ -66,4 +78,8 @@ public class Task {
     }
     public Activity getActivity() {return activity;}
     public void setActivity(Activity activity) {this.activity = activity;}
+    public Student getStudent() {return student;}
+    public void setStudent(Student student) {this.student = student;}
+    public Team getTeam() {return team;}
+    public void setTeam(Team team) {this.team = team;}
 }
