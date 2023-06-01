@@ -7,7 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PcApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PcApplication.class, args);
+		try {
+			SpringApplication.run(PcApplication.class, args);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
