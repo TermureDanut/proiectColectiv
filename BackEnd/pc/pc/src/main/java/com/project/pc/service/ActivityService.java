@@ -1,20 +1,49 @@
 package com.project.pc.service;
 
 import com.project.pc.model.Activity;
+import com.project.pc.model.Status;
 import com.project.pc.repository.ActivityRepository;
+import com.project.pc.repository.StatusRepository;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ActivityService {
     @Autowired
     private ActivityRepository activityRepository;
-    public Activity createActivity(Activity activity){
-        return activityRepository.save(new Activity(activity.getName(), activity.getDescription()));
+    @Autowired
+    private StatusRepository statusRepository;
+    private Validator validator;
+    public ActivityService() {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
+    }
+    public ResponseEntity<String> createActivity(Activity activity){
+
+        Set<ConstraintViolation<Activity>> violations = validator.validate(activity);
+        if (!violations.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid!");
+        }
+        try {
+            Status status = new Status();
+            statusRepository.save(status);
+            activity.setStatus(status);
+            activityRepository.save(activity);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Activity created successfully");
+        } catch (DataIntegrityViolationException exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate entry: activity already exists");
+        }
     }
     public List<Activity> getAllActivities(){
         List<Activity> activities = new ArrayList<>();
@@ -28,7 +57,7 @@ public class ActivityService {
         }
         return activity;
     }
-    public List<Activity> getActivityByName(String name){
+    public Optional<Activity> getActivityByName(String name){
         return activityRepository.findByName(name);
     }
     public Activity updateActivity (Long id, Activity activity){
