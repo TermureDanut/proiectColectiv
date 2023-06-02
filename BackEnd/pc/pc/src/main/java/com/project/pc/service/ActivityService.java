@@ -1,5 +1,6 @@
 package com.project.pc.service;
 
+import com.project.pc.dto.ActivityDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.model.Status;
 import com.project.pc.repository.ActivityRepository;
@@ -24,6 +25,8 @@ public class ActivityService {
     private ActivityRepository activityRepository;
     @Autowired
     private StatusRepository statusRepository;
+    @Autowired
+    private MappingService mappingService;
     private Validator validator;
     public ActivityService() {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -45,10 +48,13 @@ public class ActivityService {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate entry: activity already exists");
         }
     }
-    public List<Activity> getAllActivities(){
-        List<Activity> activities = new ArrayList<>();
-        activityRepository.findAll().forEach(activities::add);
-        return activities;
+    public List<ActivityDTO> getAllActivities(){
+        List<ActivityDTO> activityDTOS = new ArrayList<>();
+        List<Activity> activities = activityRepository.findAll();
+        for (Activity activity : activities){
+            activityDTOS.add(mappingService.convertActivityIntoDTO(activity));
+        }
+        return activityDTOS;
     }
     public Activity getActivityById (Long id) {
         Activity activity = activityRepository.findById(id).orElse(null);

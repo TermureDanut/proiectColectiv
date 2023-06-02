@@ -22,7 +22,7 @@ public class TeamService {
     @Autowired
     private MentorRepository mentorRepository;
     public Team createTeam(Team team){
-        return teamRepository.save(new Team(team.getTeamLeader()));
+        return teamRepository.save(new Team(team.getTeamLeader(), team.getTeamName()));
     }
     public Team addToActivity(Long id, Long aId){
         Team team = teamRepository.findById(id).orElse(null);
@@ -40,7 +40,6 @@ public class TeamService {
         if (team == null || mentor == null){
             return null;
         }
-        team.setMentor(mentor);
         teamRepository.save(team);
         return team;
     }

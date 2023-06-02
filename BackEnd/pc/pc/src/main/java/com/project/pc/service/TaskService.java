@@ -16,7 +16,7 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
     public Task createTask(Task task){
-        return taskRepository.save(new Task(task.getGrade(), task.getDescription(), task.getDeadline(), task.getAttendance()));
+        return taskRepository.save(new Task(task.getDescription(), task.getDeadline()));
     }
     public List<Task> getAllTasks(){
         List<Task> tasks = taskRepository.findAll();
