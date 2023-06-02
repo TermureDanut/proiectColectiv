@@ -1,5 +1,6 @@
 package com.project.pc.controller;
 
+import com.project.pc.dto.ActivityDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,8 @@ public class ActivityController {
         return activityService.createActivity(activity);
     }
     @GetMapping
-    public ResponseEntity<List<Activity>> getAllActivities(){
-        List<Activity> activities = activityService.getAllActivities();
-        return new ResponseEntity<>(activities, HttpStatus.OK);
+    public ResponseEntity<List<ActivityDTO>> getAllActivities(){
+        return new ResponseEntity<>(activityService.getAllActivities(), HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Activity> getActivityById(@PathVariable("id") Long id) {
