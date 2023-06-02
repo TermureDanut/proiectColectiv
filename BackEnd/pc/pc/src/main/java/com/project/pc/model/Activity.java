@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table
-public class Activity {
+public class Activity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -12,10 +12,18 @@ public class Activity {
     private String name;
     @Column
     private String description;
-    public Activity() {}
-    public Activity(String name, String description) {
+    @Column
+    private String deadline;
+    @OneToOne
+    @JoinColumn
+    private Status status;
+    public Activity() {
+        this.name = this.description = this.deadline = "";
+    }
+    public Activity(String name, String description, String deadline) {
         this.name = name;
         this.description = description;
+        this.deadline = deadline;
     }
     public long getId() {
         return id;
@@ -35,4 +43,8 @@ public class Activity {
     public void setDescription(String description) {
         this.description = description;
     }
+    public String getDeadline() {return deadline;}
+    public void setDeadline(String deadline) {this.deadline = deadline;}
+    public Status getStatus(){return status;}
+    public void setStatus(Status status){this.status = status;}
 }
