@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -15,9 +16,8 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
     @PostMapping
-    public ResponseEntity<Activity> createActivity(@RequestBody Activity activity) {
-        Activity createdActivity = activityService.createActivity(activity);
-        return new ResponseEntity<>(createdActivity, HttpStatus.CREATED);
+    public ResponseEntity<String> createActivity(@RequestBody Activity activity) {
+        return activityService.createActivity(activity);
     }
     @GetMapping
     public ResponseEntity<List<Activity>> getAllActivities(){
@@ -33,9 +33,8 @@ public class ActivityController {
         return new ResponseEntity<>(activity, HttpStatus.FOUND);
     }
     @GetMapping("name/{name}")
-    public ResponseEntity<List<Activity>> getActivityByName(@PathVariable("name") String name) {
-        List<Activity> activities = activityService.getActivityByName(name);
-        return new ResponseEntity<>(activities, HttpStatus.FOUND);
+    public ResponseEntity<Optional<Activity>> getActivityByName(@PathVariable("name") String name) {
+        return new ResponseEntity<>(activityService.getActivityByName(name), HttpStatus.FOUND);
     }
     @PutMapping("/{id}")
     public ResponseEntity<Activity> updateActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
