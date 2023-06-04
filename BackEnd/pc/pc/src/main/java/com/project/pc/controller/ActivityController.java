@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.ParseException;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -38,6 +40,10 @@ public class ActivityController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity with name : " + name + ", not found.");
         }
         return new ResponseEntity<>(activity, HttpStatus.FOUND);
+    }
+    @GetMapping("activitiesafter/{date}")
+    public ResponseEntity<List<ActivityDTO>> getActivitiesCreatedAfterADate(@PathVariable("date") String date) throws ParseException {
+        return new ResponseEntity<>(activityService.getActivitiesCreatedAfterADate(date), HttpStatus.OK);
     }
     @PutMapping("/{id}")
     public ResponseEntity<String> updateActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
