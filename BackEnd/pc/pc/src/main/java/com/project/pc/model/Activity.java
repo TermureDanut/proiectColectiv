@@ -1,6 +1,7 @@
 package com.project.pc.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table
@@ -9,10 +10,13 @@ public class Activity{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(unique = true)
+    @NotBlank
     private String name;
     @Column
+    @NotBlank
     private String description;
     @Column
+    @NotBlank
     private String deadline;
     @OneToOne
     @JoinColumn

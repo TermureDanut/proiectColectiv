@@ -2,6 +2,7 @@ package com.project.pc.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,9 +14,11 @@ public class Mentor {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column
+    @NotBlank
     private String name;
     @Column(unique = true)
     @Email
+    @NotBlank
     private String email;
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "mentor_task", joinColumns = { @JoinColumn(name = "mentor_id") }, inverseJoinColumns = { @JoinColumn(name = "task_id") })
