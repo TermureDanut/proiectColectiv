@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -17,40 +16,42 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
     @PostMapping
-    public ResponseEntity<String> createActivity(@RequestBody Activity activity) {
+    public ResponseEntity<String> createActivity(@RequestBody Activity activity){
         return activityService.createActivity(activity);
     }
     @GetMapping
     public ResponseEntity<List<ActivityDTO>> getAllActivities(){
         return new ResponseEntity<>(activityService.getAllActivities(), HttpStatus.OK);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Activity> getActivityById(@PathVariable("id") Long id) {
-        Activity activity = activityService.getActivityById(id);
+    @GetMapping("id/{id}")
+    public ResponseEntity<?> getActivityById(@PathVariable("id") Long id){
+        ActivityDTO activity = activityService.getActivityById(id);
         if (activity == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity with id : " + id + ", not found.");
         }
         return new ResponseEntity<>(activity, HttpStatus.FOUND);
     }
     @GetMapping("name/{name}")
-    public ResponseEntity<Optional<Activity>> getActivityByName(@PathVariable("name") String name) {
-        return new ResponseEntity<>(activityService.getActivityByName(name), HttpStatus.FOUND);
+    public ResponseEntity<?> getActivityByName(@PathVariable("name") String name){
+        ActivityDTO activity = activityService.getActivityByName(name);
+        if (activity == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity with name : " + name + ", not found.");
+        }
+        return new ResponseEntity<>(activity, HttpStatus.FOUND);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Activity> updateActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
-        Activity updated = activityService.updateActivity(id, activity);
-        if (updated == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> updateActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
+        if (activityService.updateActivity(id, activity) == null){
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity with id : " + id + ", not found.");
         }
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+        return activityService.updateActivity(id, activity);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<Activity> patchActivity(@PathVariable("id") Long id, @RequestBody Activity activity) {
-        Activity updated = activityService.patchActivity(id, activity);
-        if (updated == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> patchActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
+        if (activityService.patchActivity(id, activity) == null){
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity with id : " + id + ", not found.");
         }
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+        return activityService.patchActivity(id, activity);
     }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllActivities(){
