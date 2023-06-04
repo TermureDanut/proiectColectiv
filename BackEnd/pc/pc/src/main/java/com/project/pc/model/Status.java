@@ -33,7 +33,7 @@ public class Status {
     public Status() {
         this.createdBy = "ADMIN";
         Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        DateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy-hh:mm");
         this.creationDate = dateFormat.format(date);
         this.modifiedBy = this.modificationDate = "-";
     }
@@ -45,7 +45,7 @@ public class Status {
     public String getModificationDate() {return modificationDate;}
     public void setModificationDate() {
         Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        DateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy-hh:mm");
         this.modificationDate = dateFormat.format(date);
     }
 }
