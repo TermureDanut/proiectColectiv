@@ -3,8 +3,10 @@ package com.project.pc.service;
 import com.project.pc.dto.ActivityDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.model.Status;
+import com.project.pc.model.Task;
 import com.project.pc.repository.ActivityRepository;
 import com.project.pc.repository.StatusRepository;
+import com.project.pc.repository.TaskRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -25,6 +27,8 @@ public class ActivityService {
     private ActivityRepository activityRepository;
     @Autowired
     private StatusRepository statusRepository;
+    @Autowired
+    private TaskRepository taskRepository;
     @Autowired
     private MappingService mappingService;
     private final Validator validator;
@@ -137,16 +141,28 @@ public class ActivityService {
         }
     }
     public HttpStatus deleteAllActivities(){
+        List<Activity> activities = activityRepository.findAll();
+        for (Activity activity : activities){
+            setNullToTasks(activity);
+        }
         activityRepository.deleteAll();
         return HttpStatus.OK;
     }
     public HttpStatus deleteActivityById(long id){
-        Optional<Activity> activity = activityRepository.findById(id);
-        if (activity.isPresent()){
+        Activity activity = activityRepository.findById(id).orElse(null);
+        if (activity != null){
+            setNullToTasks(activity);
             activityRepository.deleteById(id);
             return HttpStatus.OK;
         }else {
             return HttpStatus.BAD_REQUEST;
+        }
+    }
+    public void setNullToTasks(Activity activity){
+        List<Task> tasks = taskRepository.findTasksByActivity_Id(activity.getId());
+        for (Task task : tasks){
+            task.setActivity(null);
+            taskRepository.save(task);
         }
     }
 }
