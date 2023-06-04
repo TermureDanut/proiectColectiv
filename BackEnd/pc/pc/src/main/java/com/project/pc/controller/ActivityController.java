@@ -54,11 +54,21 @@ public class ActivityController {
         return activityService.patchActivity(id, activity);
     }
     @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteAllActivities(){
-        return new ResponseEntity<>(activityService.deleteAllActivities());
+    public ResponseEntity<?> deleteAllActivities(){
+        return ResponseEntity.status(activityService.deleteAllActivities()).body("All activities deleted.");
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteActivityById(@PathVariable("id") Long id){
-        return new ResponseEntity<>(activityService.deleteActivityById(id));
+    @DeleteMapping("id/{id}")
+    public ResponseEntity<?> deleteActivityById(@PathVariable("id") Long id){
+        if (activityService.deleteActivityById(id) == HttpStatus.BAD_REQUEST){
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity with id : " + id + ", not found.");
+        }
+        return ResponseEntity.status(activityService.deleteActivityById(id)).body("Activity with id : " + id + ", deleted.");
+    }
+    @DeleteMapping("name/{name}")
+    public ResponseEntity<?> deleteActivityByName(@PathVariable("name") String name){
+        if (activityService.deleteActivityByName(name) == HttpStatus.BAD_REQUEST){
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity with name : " + name + ", not found.");
+        }
+        return ResponseEntity.status(activityService.deleteActivityByName(name)).body("Activity with name : " + name + ", deleted.");
     }
 }

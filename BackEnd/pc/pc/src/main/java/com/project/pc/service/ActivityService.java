@@ -158,6 +158,16 @@ public class ActivityService {
             return HttpStatus.BAD_REQUEST;
         }
     }
+    public HttpStatus deleteActivityByName(String name){
+        Activity activity = activityRepository.findByName(name).orElse(null);
+        if (activity != null){
+            setNullToTasks(activity);
+            activityRepository.deleteById(activity.getId());
+            return HttpStatus.OK;
+        }else {
+            return HttpStatus.BAD_REQUEST;
+        }
+    }
     public void setNullToTasks(Activity activity){
         List<Task> tasks = taskRepository.findTasksByActivity_Id(activity.getId());
         for (Task task : tasks){
