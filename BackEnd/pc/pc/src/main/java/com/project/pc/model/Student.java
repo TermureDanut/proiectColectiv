@@ -30,6 +30,9 @@ public class Student{
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "student_task", joinColumns = { @JoinColumn(name = "student_id") }, inverseJoinColumns = { @JoinColumn(name = "task_id") })
     private Set<Task> tasks = new HashSet<>();
+    @OneToOne
+    @JoinColumn
+    private Status status;
     public Student() {
         this.name = this.email = "";
     }
@@ -48,4 +51,6 @@ public class Student{
     public Set<Task> getTasks() {return tasks;}
     public void setTasks(Set<Task> tasks) {this.tasks = tasks;}
     public void addTaskToTasks(Task task){this.tasks.add(task);}
+    public Status getStatus(){return status;}
+    public void setStatus(Status status){this.status = status;}
 }

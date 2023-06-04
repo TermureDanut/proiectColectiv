@@ -26,6 +26,9 @@ public class Mentor {
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "mentor_team", joinColumns = { @JoinColumn(name = "mentor_id") }, inverseJoinColumns = { @JoinColumn(name = "team_id") })
     private Set<Team> teams = new HashSet<>();
+    @OneToOne
+    @JoinColumn
+    private Status status;
     public Mentor(){
         this.name = this.email = "";
     }
@@ -57,4 +60,6 @@ public class Mentor {
     public Set<Team> getTeams() {return teams;}
     public void setTeams(Set<Team> teams) {this.teams = teams;}
     public void addTeamToTeams(Team team){this.teams.add(team);}
+    public Status getStatus(){return status;}
+    public void setStatus(Status status){this.status = status;}
 }

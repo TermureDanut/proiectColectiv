@@ -36,6 +36,9 @@ public class Task {
     @ManyToMany(fetch = FetchType.LAZY,  mappedBy = "tasks")
     @JsonIgnore
     private Set<Student> students = new HashSet<>();
+    @OneToOne
+    @JoinColumn
+    private Status status;
     public Task(){
         this.grade = this.attendance = 0;
         this.description = this.deadline = "";
@@ -64,4 +67,6 @@ public class Task {
     public Set<Student> getStudents() {return students;}
     public void setStudents(Set<Student> students) {this.students = students;}
     public void addStudentToStudent(Student student) {this.students.add(student);}
+    public Status getStatus(){return status;}
+    public void setStatus(Status status){this.status = status;}
 }

@@ -22,6 +22,14 @@ public class Status {
     private String modificationDate;
     @OneToOne(mappedBy = "status")
     private Activity activity;
+    @OneToOne(mappedBy = "status")
+    private Mentor mentor;
+    @OneToOne(mappedBy = "status")
+    private Student student;
+    @OneToOne(mappedBy = "status")
+    private Task task;
+    @OneToOne(mappedBy = "status")
+    private Team team;
     public Status() {
         this.createdBy = "ADMIN";
         Date date = Calendar.getInstance().getTime();

@@ -29,6 +29,9 @@ public class Team {
     @ManyToMany(fetch = FetchType.LAZY,  mappedBy = "teams")
     @JsonIgnore
     private Set<Mentor> mentors = new HashSet<>();
+    @OneToOne
+    @JoinColumn
+    private Status status;
     public Team() {
         this.teamLeader = 0;
         this.teamName = "";
@@ -48,4 +51,6 @@ public class Team {
     public Set<Mentor> getMentors() {return mentors;}
     public void setMentors(Set<Mentor> mentors) {this.mentors = mentors;}
     public void addMentorToMentors(Mentor mentor) {this.mentors.add(mentor);}
+    public Status getStatus(){return status;}
+    public void setStatus(Status status){this.status = status;}
 }
