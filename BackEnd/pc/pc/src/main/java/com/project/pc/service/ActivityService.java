@@ -16,10 +16,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import java.util.*;
 
 @Service
 public class ActivityService {
@@ -72,6 +73,19 @@ public class ActivityService {
             return null;
         }
         return mappingService.convertActivityIntoDTO(activity);
+    }
+    public List<ActivityDTO> getActivitiesCreatedAfterADate(String date) throws ParseException {
+        List<Activity> activities = activityRepository.findAll();
+        List<ActivityDTO> activityDTOS = new ArrayList<>();
+        for (Activity activity : activities){
+            Date parsedDate = stringToDateConverter(date);
+            Date parsedStatusDate = stringToDateConverter(activity.getStatus().getCreationDate());
+            System.out.println(parsedDate + " " + parsedStatusDate);
+            if (parsedDate.toInstant().isBefore(parsedStatusDate.toInstant())){
+                activityDTOS.add(mappingService.convertActivityIntoDTO(activity));
+            }
+        }
+        return activityDTOS;
     }
     public ResponseEntity<String> updateActivity (Long id, Activity activity){
         Set<ConstraintViolation<Activity>> violations = validator.validate(activity);
@@ -174,5 +188,8 @@ public class ActivityService {
             task.setActivity(null);
             taskRepository.save(task);
         }
+    }
+    public Date stringToDateConverter(String date) throws ParseException {
+        return new SimpleDateFormat("dd:MM:yyyy-hh:mm").parse(date);
     }
 }
