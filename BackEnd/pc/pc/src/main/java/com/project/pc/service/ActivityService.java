@@ -27,25 +27,24 @@ public class ActivityService {
     private StatusRepository statusRepository;
     @Autowired
     private MappingService mappingService;
-    private Validator validator;
+    private final Validator validator;
     public ActivityService() {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
     public ResponseEntity<String> createActivity(Activity activity){
-
         Set<ConstraintViolation<Activity>> violations = validator.validate(activity);
         if (!violations.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fields can't be empty!");
         }
         try {
             Status status = new Status();
             statusRepository.save(status);
             activity.setStatus(status);
             activityRepository.save(activity);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Activity created successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Activity created successfully!");
         } catch (DataIntegrityViolationException exception) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate entry: activity already exists");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate entry: activity  : " + activity.getName() + ", already exists!");
         }
     }
     public List<ActivityDTO> getAllActivities(){
@@ -56,39 +55,86 @@ public class ActivityService {
         }
         return activityDTOS;
     }
-    public Activity getActivityById (Long id) {
+    public ActivityDTO getActivityById (Long id) {
         Activity activity = activityRepository.findById(id).orElse(null);
         if (activity == null){
             return null;
         }
-        return activity;
+        return mappingService.convertActivityIntoDTO(activity);
     }
-    public Optional<Activity> getActivityByName(String name){
-        return activityRepository.findByName(name);
-    }
-    public Activity updateActivity (Long id, Activity activity){
-        Activity update = activityRepository.findById(id).orElse(null);
-        if (update == null){
+    public ActivityDTO getActivityByName(String name){
+        Activity activity = activityRepository.findByName(name).orElse(null);
+        if (activity == null){
             return null;
         }
-        update.setName(activity.getName());
-        update.setDescription(activity.getDescription());
-        activityRepository.save(update);
-        return update;
+        return mappingService.convertActivityIntoDTO(activity);
     }
-    public Activity patchActivity(long id, Activity activity) {
-        Activity update = activityRepository.findById(id).orElse(null);
-        if (update == null){
-            return null;
+    public ResponseEntity<String> updateActivity (Long id, Activity activity){
+        Set<ConstraintViolation<Activity>> violations = validator.validate(activity);
+        if (!violations.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fields can't be empty!");
         }
-        if (activity.getName() != null) {
+        try {
+            Activity update = activityRepository.findById(id).orElse(null);
+            if (update == null) {
+                return null;
+            }
+            Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
+            if (status == null) {
+                return null;
+            }
+            status.setModifiedBy();
+            status.setModificationDate();
+            statusRepository.save(status);
             update.setName(activity.getName());
-        }
-        if (activity.getDescription() != null) {
             update.setDescription(activity.getDescription());
+            update.setDeadline(activity.getDeadline());
+            update.setStatus(status);
+            activityRepository.save(update);
+            return ResponseEntity.status(HttpStatus.OK).body("Activity updated successfully!");
+        } catch (DataIntegrityViolationException exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate entry: activity : " + activity.getName() + ", already exists!");
         }
-        activityRepository.save(update);
-        return update;
+    }
+    // TODO validate only fields that i need to be patched
+    public ResponseEntity<String> patchActivity(long id, Activity activity) {
+        Set<ConstraintViolation<Activity>> violations = validator.validate(activity);
+        if (!violations.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fields can't be empty!");
+        }
+        try {
+            Activity update = activityRepository.findById(id).orElse(null);
+            if (update == null) {
+                return null;
+            }
+            Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
+            if (status == null) {
+                return null;
+            }
+            status.setModifiedBy();
+            status.setModificationDate();
+            statusRepository.save(status);
+            if (activity.getName() != null) {
+                update.setName(activity.getName());
+            }else{
+                update.setName(update.getName());
+            }
+            if (activity.getDescription() != null) {
+                update.setDescription(activity.getDescription());
+            }else{
+                update.setDescription(update.getDescription());
+            }
+            if (activity.getDeadline() != null){
+                update.setDeadline(activity.getDeadline());
+            }else{
+                update.setDeadline(update.getDeadline());
+            }
+            update.setStatus(status);
+            activityRepository.save(update);
+            return ResponseEntity.status(HttpStatus.OK).body("Activity patched successfully!");
+        } catch (DataIntegrityViolationException exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate entry: activity : " + activity.getName() + ", already exists!");
+        }
     }
     public HttpStatus deleteAllActivities(){
         activityRepository.deleteAll();
