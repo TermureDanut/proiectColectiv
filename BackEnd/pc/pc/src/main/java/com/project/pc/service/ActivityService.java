@@ -80,7 +80,6 @@ public class ActivityService {
         for (Activity activity : activities){
             Date parsedDate = stringToDateConverter(date);
             Date parsedStatusDate = stringToDateConverter(activity.getStatus().getCreationDate());
-            System.out.println(parsedDate + " " + parsedStatusDate);
             if (parsedDate.toInstant().isBefore(parsedStatusDate.toInstant())){
                 activityDTOS.add(mappingService.convertActivityIntoDTO(activity));
             }
@@ -114,9 +113,8 @@ public class ActivityService {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate entry: activity : " + activity.getName() + ", already exists!");
         }
     }
-    // TODO validate only fields that i need to be patched
-    public ResponseEntity<String> patchActivity(long id, Activity activity) {
-        Set<ConstraintViolation<Activity>> violations = validator.validate(activity);
+    public ResponseEntity<String> patchActivity(long id, ActivityDTO activityDTO) {
+        Set<ConstraintViolation<ActivityDTO>> violations = validator.validate(activityDTO);
         if (!violations.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Fields can't be empty!");
         }
@@ -132,26 +130,20 @@ public class ActivityService {
             status.setModifiedBy();
             status.setModificationDate();
             statusRepository.save(status);
-            if (activity.getName() != null) {
-                update.setName(activity.getName());
-            }else{
-                update.setName(update.getName());
+            if (activityDTO.getName() != null) {
+                update.setName(activityDTO.getName());
             }
-            if (activity.getDescription() != null) {
-                update.setDescription(activity.getDescription());
-            }else{
-                update.setDescription(update.getDescription());
+            if (activityDTO.getDescription() != null) {
+                update.setDescription(activityDTO.getDescription());
             }
-            if (activity.getDeadline() != null){
-                update.setDeadline(activity.getDeadline());
-            }else{
-                update.setDeadline(update.getDeadline());
+            if (activityDTO.getDeadline() != null){
+                update.setDeadline(activityDTO.getDeadline());
             }
             update.setStatus(status);
             activityRepository.save(update);
             return ResponseEntity.status(HttpStatus.OK).body("Activity patched successfully!");
         } catch (DataIntegrityViolationException exception) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate entry: activity : " + activity.getName() + ", already exists!");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Duplicate entry: activity : " + activityDTO.getName() + ", already exists!");
         }
     }
     public HttpStatus deleteAllActivities(){
