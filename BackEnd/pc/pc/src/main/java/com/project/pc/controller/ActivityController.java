@@ -53,11 +53,11 @@ public class ActivityController {
         return activityService.updateActivity(id, activity);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<String> patchActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
-        if (activityService.patchActivity(id, activity) == null){
+    public ResponseEntity<String> patchActivity(@PathVariable("id") Long id, @RequestBody ActivityDTO activityDTO){
+        if (activityService.patchActivity(id, activityDTO) == null){
             return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Activity with id : " + id + ", not found.");
         }
-        return activityService.patchActivity(id, activity);
+        return activityService.patchActivity(id, activityDTO);
     }
     @DeleteMapping
     public ResponseEntity<?> deleteAllActivities(){
