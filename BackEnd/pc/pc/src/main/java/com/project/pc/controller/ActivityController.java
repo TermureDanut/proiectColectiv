@@ -45,6 +45,10 @@ public class ActivityController {
     public ResponseEntity<List<ActivityDTO>> getActivitiesCreatedAfterADate(@PathVariable("date") String date) throws ParseException {
         return new ResponseEntity<>(activityService.getActivitiesCreatedAfterADate(date), HttpStatus.OK);
     }
+    @GetMapping("activitiesmodafter/{date}")
+    public ResponseEntity<List<ActivityDTO>> getActivitiesModifiedAfterADate(@PathVariable("date") String date) throws ParseException {
+        return new ResponseEntity<>(activityService.getActivitiesModifiedAfterADate(date), HttpStatus.OK);
+    }
     @PutMapping("/{id}")
     public ResponseEntity<String> updateActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
         if (activityService.updateActivity(id, activity) == null){
